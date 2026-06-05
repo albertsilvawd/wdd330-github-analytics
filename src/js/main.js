@@ -1,4 +1,4 @@
-import { loadHeaderFooter, alertMessage, showLoading } from './utils.mjs';
+import { loadHeaderFooter, alertMessage, showLoading, saveRecentSearch, getRecentSearches, saveLastSearch, getLastSearch } from './utils.mjs';
 import GitHubService from './GitHubService.mjs';
 import ProfileDashboard from './ProfileDashboard.mjs';
 import RepoList from './RepoList.mjs';
@@ -14,6 +14,38 @@ const searchBtn = document.getElementById('search-btn');
 const usernameInput = document.getElementById('username-input');
 const dashboard = document.getElementById('dashboard');
 
+function renderRecentSearches() {
+    const searches = getRecentSearches();
+    const existing = document.getElementById('recent-searches');
+    if (existing) existing.remove();
+    if (searches.length === 0) return;
+
+    const container = document.createElement('div');
+    container.id = 'recent-searches';
+    container.innerHTML = `
+    <p class="recent-label">Recent searches:</p>
+    <div class="recent-list">
+      ${searches.map(s => `<button class="recent-btn" data-username="${s}">${s}</button>`).join('')}
+    </div>
+  `;
+
+    container.querySelectorAll('.recent-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            usernameInput.value = btn.dataset.username;
+            searchProfile(btn.dataset.username);
+        });
+    });
+
+    const searchContainer = document.querySelector('.search-container');
+    searchContainer.insertAdjacentElement('afterend', container);
+}
+
+function updateURL(username) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('user', username);
+    window.history.pushState({}, '', url);
+}
+
 async function searchProfile(username) {
     if (!username.trim()) {
         alertMessage('Please enter a GitHub username.');
@@ -22,6 +54,11 @@ async function searchProfile(username) {
 
     dashboard.classList.remove('hidden');
     showLoading(dashboard);
+
+    updateURL(username);
+    saveLastSearch(username);
+    saveRecentSearch(username);
+    renderRecentSearches();
 
     try {
         const [profile, repos, events] = await Promise.all([
@@ -52,6 +89,9 @@ async function searchProfile(username) {
     } catch (err) {
         alertMessage(err.message || 'User not found. Please try again.');
         dashboard.classList.add('hidden');
+        const url = new URL(window.location.href);
+        url.searchParams.delete('user');
+        window.history.pushState({}, '', url);
     }
 }
 
@@ -64,3 +104,17 @@ usernameInput.addEventListener('keypress', (e) => {
         searchProfile(usernameInput.value.trim());
     }
 });
+
+// Load from URL parameter or last search on page load
+const urlParams = new URLSearchParams(window.location.search);
+const urlUser = urlParams.get('user');
+const lastUser = getLastSearch();
+
+if (urlUser) {
+    usernameInput.value = urlUser;
+    searchProfile(urlUser);
+} else if (lastUser) {
+    usernameInput.value = lastUser;
+}
+
+renderRecentSearches();

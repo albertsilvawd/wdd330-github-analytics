@@ -48,3 +48,23 @@ export function showLoading(parentElement) {
 export function clearElement(element) {
     element.innerHTML = '';
 }
+
+export function saveRecentSearch(username) {
+    const searches = getLocalStorage('gh-recent-searches') || [];
+    const filtered = searches.filter(s => s !== username);
+    filtered.unshift(username);
+    const trimmed = filtered.slice(0, 5);
+    setLocalStorage('gh-recent-searches', trimmed);
+}
+
+export function getRecentSearches() {
+    return getLocalStorage('gh-recent-searches') || [];
+}
+
+export function saveLastSearch(username) {
+    setLocalStorage('gh-last-search', username);
+}
+
+export function getLastSearch() {
+    return getLocalStorage('gh-last-search') || '';
+}

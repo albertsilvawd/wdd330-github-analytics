@@ -407,3 +407,38 @@ footer {
         gap: 0.2rem;
     }
 }
+
+/* Recent Searches */
+#recent-searches {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.recent-label {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+.recent-list {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.recent-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--primary);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.recent-btn:hover {
+    border-color: var(--primary);
+    background: var(--border);
+}
