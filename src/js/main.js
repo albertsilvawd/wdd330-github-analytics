@@ -1,6 +1,7 @@
 import { loadHeaderFooter, alertMessage, showLoading, saveRecentSearch, getRecentSearches, saveLastSearch, getLastSearch } from './utils.mjs';
 import GitHubService from './GitHubService.mjs';
 import ProfileDashboard from './ProfileDashboard.mjs';
+import ProfileScore from './ProfileScore.mjs';
 import RepoList from './RepoList.mjs';
 import ActivityFeed from './ActivityFeed.mjs';
 import DevToService from './DevToService.mjs';
@@ -71,6 +72,9 @@ async function searchProfile(username) {
 
         const profileDashboard = new ProfileDashboard({ profile, repos });
         profileDashboard.render(dashboard);
+
+        const profileScore = new ProfileScore(profile, repos);
+        profileScore.render(dashboard);
 
         const repoList = new RepoList(repos);
         repoList.render(dashboard);
