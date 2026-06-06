@@ -6,6 +6,8 @@ import RepoList from './RepoList.mjs';
 import ActivityFeed from './ActivityFeed.mjs';
 import DevToService from './DevToService.mjs';
 import ArticleList from './ArticleList.mjs';
+import LanguagesChart from './LanguagesChart.mjs';
+import ActivityChart from './ActivityChart.mjs';
 
 loadHeaderFooter();
 
@@ -76,6 +78,12 @@ async function searchProfile(username) {
         const profileScore = new ProfileScore(profile, repos);
         profileScore.render(dashboard);
 
+        const languagesChart = new LanguagesChart(repos);
+        languagesChart.render(dashboard);
+
+        const activityChart = new ActivityChart(repos);
+        activityChart.render(dashboard);
+
         const repoList = new RepoList(repos);
         repoList.render(dashboard);
 
@@ -109,7 +117,6 @@ usernameInput.addEventListener('keypress', (e) => {
     }
 });
 
-// Load from URL parameter or last search on page load
 const urlParams = new URLSearchParams(window.location.search);
 const urlUser = urlParams.get('user');
 const lastUser = getLastSearch();
