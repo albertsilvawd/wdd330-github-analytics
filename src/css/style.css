@@ -632,8 +632,9 @@ footer {
 }
 
 .chart-container canvas {
-    width: 200px !important;
-    height: 200px !important;
+    width: 220px !important;
+    height: 220px !important;
+    min-height: 220px !important;
 }
 
 .chart-legend {
@@ -672,7 +673,13 @@ footer {
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 1.5rem;
-    height: 220px;
+    height: 280px;
+}
+
+.bar-chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 240px !important;
 }
 
 .bar-chart-container canvas {

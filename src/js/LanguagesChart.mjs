@@ -48,6 +48,11 @@ export default class LanguagesChart {
         container.insertAdjacentHTML('beforeend', html);
 
         const canvas = document.getElementById('languages-chart');
+        canvas.style.width = '220px';
+        canvas.style.height = '220px';
+        canvas.width = 220;
+        canvas.height = 220;
+
         new Chart(canvas, {
             type: 'doughnut',
             data: {
@@ -60,7 +65,7 @@ export default class LanguagesChart {
                 }]
             },
             options: {
-                responsive: true,
+                responsive: false,
                 maintainAspectRatio: false,
                 plugins: {
                     legend: { display: false },

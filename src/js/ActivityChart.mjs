@@ -46,6 +46,9 @@ export default class ActivityChart {
         container.insertAdjacentHTML('beforeend', html);
 
         const canvas = document.getElementById('activity-chart');
+        canvas.width = canvas.parentElement.offsetWidth - 48;
+        canvas.height = 220;
+
         new Chart(canvas, {
             type: 'bar',
             data: {
@@ -60,7 +63,7 @@ export default class ActivityChart {
                 }]
             },
             options: {
-                responsive: true,
+                responsive: false,
                 maintainAspectRatio: false,
                 plugins: {
                     legend: { display: false },
